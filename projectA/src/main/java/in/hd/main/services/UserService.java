@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import in.hd.main.dao.UserDao;
 import in.hd.main.dto.UserReqDTO;
 import in.hd.main.dto.UserResDTO;
+import in.hd.main.exceptions.UserExistException;
 
 
 @Service
@@ -22,7 +23,7 @@ public class UserService {
 	}
 	
 	
-	public UserResDTO saveUserData(UserReqDTO userReqDTO) {
+	public UserResDTO saveUserData(UserReqDTO userReqDTO) throws UserExistException{
 		UserResDTO savedData = userDao.saveUser(userReqDTO);
 		return savedData;
 	}

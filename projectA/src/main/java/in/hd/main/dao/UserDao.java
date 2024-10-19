@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 import in.hd.main.dto.UserReqDTO;
 import in.hd.main.dto.UserResDTO;
 import in.hd.main.entities.UserEntity;
+import in.hd.main.exceptions.UserExistException;
 import in.hd.main.repository.UserRepository;
 import in.hd.main.translater.UserTranslater;
 
@@ -21,9 +22,12 @@ public class UserDao {
 	@Autowired
 	private UserTranslater userTranslater;
 	
-	public UserResDTO saveUser(UserReqDTO userReqDTO) {
+	public UserResDTO saveUser(UserReqDTO userReqDTO) throws UserExistException{
 		UserEntity userEntity= userTranslater.userDtoToEntity(userReqDTO);
 		
+		if (userRepository.existsByEmail(userEntity.getEmail())) {
+			throw new UserExistException("user already exist");
+		}
 		
 		 // Set the user reference in each course
 	    if (userEntity.getCourses() != null) {
